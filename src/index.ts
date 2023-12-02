@@ -1,6 +1,6 @@
 import { formatDay } from './util';
 
-require('dotenv').config()
+require('dotenv').config();
 
 const day = Number(process.env.npm_config_day ?? 0);
 const part = Number(process.env.npm_config_part ?? 0);
