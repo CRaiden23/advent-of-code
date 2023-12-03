@@ -58,3 +58,9 @@ export const setupDay = (day: number) => {
   writeFileSync(`${dir}/part1.ts`, genTemplate(1));
   writeFileSync(`${dir}/part2.ts`, genTemplate(2));
 };
+
+// helpers
+
+export const isANumber = (input: string): boolean => {
+  return !isNaN(parseInt(input));
+};
