@@ -1,4 +1,4 @@
-import { parseInput, isANumber } from '../util';
+import { parseInput, isANumber } from '../util/index.js';
 
 const input = parseInput({ split: { mapper: false } });
 let result = 0;

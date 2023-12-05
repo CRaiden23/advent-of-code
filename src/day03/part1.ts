@@ -1,4 +1,4 @@
-import { parseInput, isANumber } from '../util';
+import { parseInput, isANumber } from '../util/index.js';
 
 const specialChars = /[^0-9.]/g;
 

@@ -1,15 +1,16 @@
-import { formatDay } from './util';
-
-require('dotenv').config();
+import { formatDay } from './util/index.js';
+import 'dotenv/config.js';
 
 const day = Number(process.env.npm_config_day ?? 0);
 const part = Number(process.env.npm_config_part ?? 0);
+
+const script = await import(`./day${formatDay(day)}/part${part}.js`);
 
 const outputSolution = (part: number) =>
   console.log(
     `Day ${day} | Part ${part} - Solution: ${
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require(`./day${formatDay(day)}/part${part}.js`).default
+      script.default
     }`
   );
 

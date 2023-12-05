@@ -1,4 +1,4 @@
-import { parseInput } from '../util';
+import { parseInput } from '../util/index.js';
 
 class EndOfMap {
   lastIndex: number;
@@ -112,21 +112,36 @@ const [
   humidityToLocation,
 ] = processMap(mapInput);
 
+const processes: Promise<number>[] = [];
 seedRanges.forEach((seedRange) => {
-  for (let i = 0; i < seedRange.length; i++) {
-    const seed = seedRange.start + i;
-    const soil = calculateDestination(seedToSoil, seed);
-    const fert = calculateDestination(soilToFertilizer, soil);
-    const water = calculateDestination(fertilizerToWater, fert);
-    const light = calculateDestination(waterToLight, water);
-    const temp = calculateDestination(lightToTemperature, light);
-    const humid = calculateDestination(temperatureToHumidity, temp);
-    const loc = calculateDestination(humidityToLocation, humid);
+  processes.push(
+    new Promise<number>((resolve) => {
+      let result = Number.MAX_SAFE_INTEGER;
+      for (let i = 0; i < seedRange.length; i++) {
+        const seed = seedRange.start + i;
+        const soil = calculateDestination(seedToSoil, seed);
+        const fert = calculateDestination(soilToFertilizer, soil);
+        const water = calculateDestination(fertilizerToWater, fert);
+        const light = calculateDestination(waterToLight, water);
+        const temp = calculateDestination(lightToTemperature, light);
+        const humid = calculateDestination(temperatureToHumidity, temp);
+        const loc = calculateDestination(humidityToLocation, humid);
 
-    if (loc < result) {
-      result = loc;
+        if (loc < result) {
+          result = loc;
+        }
+      }
+      resolve(result);
+    })
+  );
+});
+
+await Promise.all(processes).then((locations) => {
+  locations.forEach((location) => {
+    if (location < result) {
+      result = location;
     }
-  }
+  });
 });
 
 export default result;

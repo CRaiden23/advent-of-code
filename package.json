@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AoC 2023",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "start": "rimraf dist && tsc && node ."
   },
