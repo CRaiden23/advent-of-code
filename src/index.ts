@@ -4,7 +4,10 @@ import 'dotenv/config.js';
 const day = Number(process.env.npm_config_day ?? 0);
 const part = Number(process.env.npm_config_part ?? 0);
 
+const timeKey = `Runtime`;
+console.time(timeKey);
 const script = await import(`./day${formatDay(day)}/part${part}.js`);
+console.timeEnd(timeKey);
 
 const outputSolution = (part: number) =>
   console.log(
