@@ -1,28 +1,31 @@
 import { parseInput } from '../util/index.js';
 
 const input = parseInput({ split: { mapper: false } });
-let result = 0;
+let result = 1;
 
-const time = Number(
-  input[0]
-    .split(':')[1]
-    .split(' ')
-    .filter((value) => value != '')
-    .reduce((time, curr) => (time += curr))
-);
-const record = Number(
-  input[1]
-    .split(':')[1]
-    .split(' ')
-    .filter((value) => value != '')
-    .reduce((time, curr) => (time += curr))
-);
+const times = input[0]
+  .split(':')[1]
+  .split(' ')
+  .filter((value) => value != '')
+  .map((time) => Number(time));
 
-for (let timeHeld = 0; timeHeld < time; timeHeld++) {
-  const distance = timeHeld * (time - timeHeld);
-  if (distance > record) {
-    result++;
+const records = input[1]
+  .split(':')[1]
+  .split(' ')
+  .filter((value) => value != '')
+  .map((record) => Number(record));
+const numRaces = times.length;
+
+for (let race = 0; race < numRaces; race++) {
+  let wins = 0;
+  for (let timeHeld = 0; timeHeld < times[race]; timeHeld++) {
+    const distance = timeHeld * (times[race] - timeHeld);
+    if (distance > records[race]) {
+      wins++;
+    }
   }
+
+  result *= wins;
 }
 
 export default result;
