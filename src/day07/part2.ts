@@ -41,9 +41,6 @@ enum Rank {
   HighCard = 0,
 }
 
-const input = parseInput({ split: { mapper: false } });
-let result = 0;
-
 class Hand {
   Cards: string;
   Bid: number;
@@ -113,9 +110,13 @@ const handleTies = (hands: Hand[]): Hand[] => {
 
     if (a.Rank === b.Rank) {
       for (let i = 0; i < a.Cards.length; i++) {
-        if (CardStrengths[a.Cards[i] as Card] > CardStrengths[b.Cards[i] as Card]) {
+        if (
+          CardStrengths[a.Cards[i] as Card] > CardStrengths[b.Cards[i] as Card]
+        ) {
           return 1;
-        } else if (CardStrengths[a.Cards[i] as Card] < CardStrengths[b.Cards[i] as Card]) {
+        } else if (
+          CardStrengths[a.Cards[i] as Card] < CardStrengths[b.Cards[i] as Card]
+        ) {
           return -1;
         }
       }
@@ -127,25 +128,27 @@ const handleTies = (hands: Hand[]): Hand[] => {
   return hands;
 };
 
-let hands: Hand[] = [];
-input.forEach((line) => {
-  const [cards, bid] = line.split(' ');
-  const hand = new Map<string, number>();
-  let jokerCount = 0;
+const hands = parseInput({
+  split: {
+    mapper: (line) => {
+      const [cards, bid] = line.split(' ');
+      const hand = new Map<string, number>();
+      let jokerCount = 0;
 
-  cards.split('').forEach((card) => {
-    hand.set(card, (hand.get(card) ?? 0) + 1);
-    if (card === 'J') jokerCount++;
-  });
+      cards.split('').forEach((card) => {
+        hand.set(card, (hand.get(card) ?? 0) + 1);
+        if (card === 'J') jokerCount++;
+      });
 
-  hands.push(new Hand(cards, Number(bid), hand, jokerCount));
+      return new Hand(cards, Number(bid), hand, jokerCount);
+    },
+  },
 });
+let result = 0;
 
 hands.forEach((hand) => hand.determineInitialRank());
 
-hands = handleTies(hands);
-
-hands.forEach((hand, index) => {
+handleTies(hands).forEach((hand, index) => {
   result += hand.Bid * (index + 1);
 });
 

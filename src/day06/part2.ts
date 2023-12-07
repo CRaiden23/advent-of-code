@@ -8,14 +8,14 @@ const time = Number(
     .split(':')[1]
     .split(' ')
     .filter((value) => value != '')
-    .reduce((time, curr) => time += curr)
+    .reduce((time, curr) => (time += curr))
 );
 const record = Number(
   input[1]
     .split(':')[1]
     .split(' ')
     .filter((value) => value != '')
-    .reduce((record, curr) => record += curr)
+    .reduce((record, curr) => (record += curr))
 );
 
 for (let timeHeld = 0; timeHeld < time; timeHeld++) {

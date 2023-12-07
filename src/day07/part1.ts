@@ -31,9 +31,6 @@ const CardStrengths: { [cards in Card]: number } = {
   2: 0,
 };
 
-const input = parseInput({ split: { mapper: false } });
-let result = 0;
-
 class Hand {
   Cards: string;
   Bid: number;
@@ -108,23 +105,25 @@ const handleTies = (hands: Hand[]): Hand[] => {
   return hands;
 };
 
-let hands: Hand[] = [];
-input.forEach((line) => {
-  const [cards, bid] = line.split(' ');
-  const hand = new Map<string, number>();
+const hands = parseInput({
+  split: {
+    mapper: (line) => {
+      const [cards, bid] = line.split(' ');
+      const hand = new Map<string, number>();
 
-  cards.split('').forEach((card) => {
-    hand.set(card, (hand.get(card) ?? 0) + 1);
-  });
+      cards.split('').forEach((card) => {
+        hand.set(card, (hand.get(card) ?? 0) + 1);
+      });
 
-  hands.push(new Hand(cards, Number(bid), hand));
+      return new Hand(cards, Number(bid), hand);
+    },
+  },
 });
+let result = 0;
 
 hands.forEach((hand) => hand.determineInitialRank());
 
-hands = handleTies(hands);
-
-hands.forEach((hand, index) => {
+handleTies(hands).forEach((hand, index) => {
   result += hand.Bid * (index + 1);
 });
 
